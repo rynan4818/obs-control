@@ -2,6 +2,8 @@
 
 [Beat Saber Overlay 改良版](https://github.com/rynan4818/beat-saber-overlay)でOBSのシーンコントロールをする追加スクリプトです。
 
+[サンプル動画](https://twitter.com/rynan4818/status/1383422547090284550)
+
 ## 使用方法
 
  1. OBSにobs-websocketをインストールします
