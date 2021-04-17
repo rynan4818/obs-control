@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Overlay</title>
+		<link rel="stylesheet" href="style.css">
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet"> 
+	</head>
+	
+	<body>
+		<div id="overlay" class="hidden">
+			<div id="performance">
+				<div class="performance_group" id="now_pp_group">
+					<span class="text" id="now_pp">0</span>
+					<span class="subtext" id="now_pp_text">pp</span>
+				</div>
+
+				<div class="performance_group">
+					<span class="text" id="rank">E</span>
+					<span class="subtext" id="percentage">0%</span>
+				</div>
+
+				<div class="performance_group" id="miss_group">
+					<span class="text" id="miss">0</span>
+					<span class="subtext">Miss</span>
+				</div>
+
+				<div class="performance_group">
+					<span class="text" id="combo">0</span>
+					<span class="subtext">Combo</span>
+				</div>
+				
+				<span id="score">0</span>
+
+				<div class="energy_container" id="energy_area">
+				    <div class="energy_background" id="energy_group">
+				        <div class="energy" id="energy_bar"></div>
+				    </div>
+				</div>
+			</div>
+
+			<div id="beatmap">
+				<div id="cover_group">
+					<div id="cover">
+						<img id="image">
+						
+						<svg width="90" height="90">
+							<rect width="90" height="90" id="darken"></rect>
+							<circle cx="45" cy="45" r="30" id="remaining"></circle>
+							<circle cx="45" cy="45" r="30" id="progress"></circle>
+						</svg>
+
+						<div>
+							<span id="song_time">0:00</span>
+						</div>
+					</div>
+				</div>
+
+				<div id="meta">
+					<div id="text">
+						<div id="title_subtitle">
+							<div id="titles">
+								<div id="title_group">
+									<span id="title">Title</span>
+								</div>
+								<div id="title_subtitle_space"></div>
+								<div id="subtitle_group">
+									<span id="subtitle">Subtitle</span>
+								</div>
+							</div>
+						</div>
+
+						<div id="artist_mapper_group">
+							<div id="artist_mapper">
+								<div id="artist_group">
+									<span id="artist">Artist</span><span id="mapper_header"> [</span><span id="mapper">Mapper</span><span id="mapper_footer">]</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<span id="bsr_group">
+							<span id="bsr_text">bsr </span><span id="bsr">00000</span>
+						</span>
+						<span id="pp_group">
+							<span id="star_text">★</span><span id="star">0.0</span>
+							<span id="pp">0.0</span><span id="pp_text">pp</span>
+						</span>
+					</div>
+					<div id="map_info_group">
+						<div id="map_info">
+							<span id="difficulty_group">
+								<span id="difficulty_label">
+									<span id="difficulty">Easy</span><span id="label_group"><span id="label_header">(</span><span id="label">customLabel</span><span id="label_footer">)</span></span>
+								</span>
+							</span>
+							<span id="bpm_group">
+								<span id="bpm">0</span><span id="bpm_text"> BPM</span>
+							</span>
+							<span id="njs_group">
+								<span id="njs">0</span><span id="njs_text"> NJS</span>
+							</span>
+							<span id="mod_group">
+								<span id="mod">MOD</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src='./js/obs-websocket.js'></script>
+		<script src='./js/obs-control.js'></script>
+
+		<script src="./js/options.js"></script>
+		
+		<script src="./js/ui.js"></script>
+		<script src="./js/events.js"></script>
+		<script src="./js/manager.js"></script>
+	</body>
+</html>
