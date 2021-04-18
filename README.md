@@ -75,7 +75,7 @@
 
 本ツールのライセンスはMITライセンスを適用します
 
-本ツールに添付シている obs-websocket.js は以下の物を使用しています。
+本ツールに添付している obs-websocket.js は以下の物を使用しています。
 
 [obs-websocket-js](https://github.com/haganbmj/obs-websocket-js)
 
