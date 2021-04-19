@@ -1,20 +1,20 @@
 # obs-control
 
-[Beat Saber Overlay 改良版](https://github.com/rynan4818/beat-saber-overlay)でOBSのシーンコントロールをする追加スクリプトです。
+[Beat Saber Overlay 改良版](https://github.com/rynan4818/beat-saber-overlay)でOBS Studioのシーンコントロールをする追加スクリプトです。
 
 [サンプル動画](https://twitter.com/rynan4818/status/1383422547090284550)
 
 ## 使用方法
 
- 1. OBSにobs-websocketをインストールします
+ 1. OBS Studioにobs-websocketをインストールします
 
     配布サイト：https://github.com/Palakis/obs-websocket/releases
 
     から、最新のリリースの
-    obs-websocket-*.*.*-Windows-Installer.exe  (*は最新バージョンを選択)
+    obs-websocket-＊.＊.＊-Windows-Installer.exe  (*は最新バージョンを選択)
     をダウンロードしてインストールします
 
- 2. OBSを起動して「ツール」の「Websocketサーバ設定」を開いて「WebSocketsサーバを有効にする」をチェックします。
+ 2. OBS Studioを起動して「ツール」の「Websocketサーバ設定」を開いて「WebSocketsサーバを有効にする」をチェックします。
 
     「認証を有効にする」をチェックすると、パスワード設定できますが
      その場合は後述する、本ツールのパスワード設定が必要です
@@ -25,11 +25,11 @@
 
     インストールと設定方法は上記サイトに詳細があります。
     
-    オーバーレイ機能を使用しない場合は、OBS上でオーバーレイを非表示にしてください
+    オーバーレイ機能を使用しない場合は、OBS Studio上でオーバーレイを非表示にしてください
 
     (例えば、他のDataPullerとかのオーバーレイを使用している場合など)
     
-    非表示にしても、裏でOBSコントロール機能は動くでのOBSのどこかのシーンのソースにオーバーレイを設定する必要があります
+    非表示にしても、裏でOBSコントロール機能は動くでのOBS Studioのどこかのシーンのソースにオーバーレイを設定する必要があります
 
  4. 本ツールの[リリースページ](https://github.com/rynan4818/obs-control/releases)から最新リリースをダウンロードします。
 
@@ -57,7 +57,7 @@
 
     先頭の以下の7行の内容を必要に応じて変更します。
 
-    デフォルト設定のまま使う場合は、メニューシーンのOBSのシーン名を `BS-Game` ゲームシーンのOBSのシーン名を `BS-Menu` とします。
+    デフォルト設定のまま使う場合は、メニューシーンのOBS Studioのシーン名を `BS-Game` ゲームシーンのシーン名を `BS-Menu` とします。
 
         const obs_address  = 'localhost:4444';   //基本的に変更不要
         const obs_password = '';                 //OBSにパスワード設定がある場合のみ設定
@@ -67,9 +67,9 @@
         const obs_game_scene_name  = 'BS-Game';  //ゲームシーン名
         const obs_menu_scene_name  = 'BS-Menu';  //メニューシーン名
 
- 7. あとは通常通りOBSで記録・配信すればＯＫです。
+ 7. あとは通常通りOBS Studioで記録・配信すればＯＫです。
 
-    BeatSaber起動直後のメニューシーン切り替えは発生しないので、手動でOBSのシーン名をメニューシーンにしておくか１度プレイすれば切り替わります。
+    BeatSaber起動直後のメニューシーン切り替えは発生しないので、手動でOBS Studioのシーン名をメニューシーンにしておくか１度プレイすれば切り替わります。
 
 ## ライセンス
 
