@@ -27,6 +27,8 @@
 
     インストールと設定方法は上記サイトに詳細があります。
     
+    **注意点として `表示されていないときにソースをシャットダウン` と `シーンがアクティブになったときにブラウザの表示を更新` の２つはチェックしないで下さい**
+
     オーバーレイ機能を使用しない場合は、OBS Studio上でオーバーレイを非表示にしてください
 
     (例えば、他のDataPullerとかのオーバーレイを使用している場合など)
@@ -57,17 +59,18 @@
 
  6. オーバーレイの「js」フォルダにコピーした obs-control.js をメモ帳で開きます
 
-    先頭の以下の7行の内容を必要に応じて変更します。
+    先頭の以下の8行の内容を必要に応じて変更します。
 
     デフォルト設定のまま使う場合は、メニューシーンのOBS Studioのシーン名を `BS-Game` ゲームシーンのシーン名を `BS-Menu` とします。
 
-        const obs_address  = 'localhost:4444';   //基本的に変更不要
-        const obs_password = '';                 //OBSにパスワード設定がある場合のみ設定
-        const obs_start_scene_duration = 0;      //ゲームシーンに切り替える前に開始シーンを表示する時間(秒単位) [0の場合は開始シーンは無効になる]
-        const obs_menu_scene_duration  = 0;      //メニューシーンに切替わる前に待機する時間(秒単位)
-        const obs_start_scene_name = 'BS-Start'; //開始シーン名
-        const obs_game_scene_name  = 'BS-Game';  //ゲームシーン名
-        const obs_menu_scene_name  = 'BS-Menu';  //メニューシーン名
+         const obs_address  = 'localhost:4444';   //基本的に変更不要
+         const obs_password = '';                 //OBSにパスワード設定がある場合のみ設定
+         const obs_game_scene_name  = 'BS-Game';  //ゲームシーン名
+         const obs_menu_scene_name  = 'BS-Menu';  //メニューシーン名
+         const obs_start_scene_duration = 0;          //ゲームシーンに切り替える前に開始シーンを表示する時間(秒単位) [0の場合は開始シーンは無効になる]
+         const obs_start_scene_name     = 'BS-Start'; //開始シーン名  ※使用時はobs_start_scene_durationの設定要
+         const obs_end_scene_duration   = 0;          //メニューシーンに切替わる前に終了シーンを表示する時間(秒単位) [0の場合は終了シーンは無効になる]
+         const obs_end_scene_name       = 'BS-End';   //終了シーン名  ※使用時はobs_end_scene_durationの設定要
 
  7. あとは通常通りOBS Studioで記録・配信すればＯＫです。
 
