@@ -4,6 +4,8 @@
 
 [サンプル動画](https://twitter.com/rynan4818/status/1383422547090284550)
 
+※[Streamlabs OBS版はこちら](https://github.com/rynan4818/Streamlabs-obs-control)
+
 ## 使用方法
 
  1. OBS Studioにobs-websocketをインストールします
