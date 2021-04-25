@@ -13,11 +13,14 @@ const obs_fail_scene_duration   = 0;           //Fail(フェイル)時にメニ�
 const obs_fail_scene_name       = 'BS-Fail';   //Fail(フェイル)用終了シーン名  ※使用時はobs_fail_scene_durationの設定要
 const obs_pause_scene_duration  = 0;           //Pause(ポーズ)してメニューに戻る場合にメニューシーンに切替わる前に終了シーンを表示する時間(秒単位) [0の場合は無効]
 const obs_pause_scene_name      = 'BS-Pause';  //Pause(ポーズ)用終了シーン名  ※使用時はobs_pause_scene_durationの設定
+const obs_recording_check       = false;       //[true/false]trueにするとゲームシーン開始時に録画状態をチェックする。
+const obs_not_rec_sound         = 'file:///C://Windows//Media//Windows%20Notify%20Calendar.wav' //ゲームシーン開始時に録画されていない場合に鳴らす音(適当な音声ファイルをブラウザに貼り付けて、アドレス欄のURLをコピーする)
 
 let now_scene;
 let bs_menu_flag = true;
 let end_event = '';
 let obs;
+const not_rec_audio = new Audio(obs_not_rec_sound);
 
 function obs_connect() {
     obs = new OBSWebSocket();
@@ -50,6 +53,13 @@ function obs_connect() {
 
 obs_connect();
 
+function recording_check() {
+    if (!obs_recording_check) return;
+    obs.send('GetRecordingStatus').then((data) => {
+        if (!data.isRecording || data.isRecordingPaused) not_rec_audio.play();
+    });
+}
+
 function scene_change(name) {
     if (name != now_scene) {
         obs.send('SetCurrentScene', {
@@ -79,6 +89,7 @@ function start_scene_change() {
 function op_songStart(data) {
     end_event = '';
     if (bs_menu_flag) {
+        recording_check()
         if (obs_game_event_delay > 0) {
             setTimeout(start_scene_change, obs_game_event_delay);
         } else {

@@ -84,6 +84,8 @@
          const obs_fail_scene_name       = 'BS-Fail';   //Fail(フェイル)用終了シーン名  ※使用時はobs_fail_scene_durationの設定要
          const obs_pause_scene_duration  = 0;           //Pause(ポーズ)してメニューに戻る場合にメニューシーンに切替わる前に終了シーンを表示する時間(秒単位) [0の場合は無効]
          const obs_pause_scene_name      = 'BS-Pause';  //Pause(ポーズ)用終了シーン名  ※使用時はobs_pause_scene_durationの設定
+         const obs_recording_check       = false;       //[true/false]trueにするとゲームシーン開始時に録画状態をチェックする。
+         const obs_not_rec_sound         = 'file:///C://Windows//Media//Windows%20Notify%20Calendar.wav' //ゲームシーン開始時に録画されていない場合に鳴らす音(適当な音声ファイルをブラウザに貼り付けて、アドレス欄のURLをコピー
 
  7. あとは通常通りOBS Studioで記録・配信すればＯＫです。
 
