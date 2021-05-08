@@ -86,7 +86,7 @@ function start_scene_change() {
   }
 }
 
-function op_songStart(data) {
+ex_songStart.push((data) => {
     end_event = '';
     if (bs_menu_flag) {
         recording_check()
@@ -97,7 +97,7 @@ function op_songStart(data) {
         }
     }
     bs_menu_flag = false;
-}
+});
 
 function end_scene_change() {
   let end_scene_duration = 0;
@@ -132,33 +132,33 @@ function menu_event() {
   bs_menu_flag = true;
 }
 
-function op_menu(data) {
+ex_menu.push((data) => {
     menu_event();
-}
+});
 
-function op_finished(data) {
+ex_finished.push((data) => {
     end_event = 'finish';
     if (obs_menu_event_switch) menu_event();
-}
+});
 
-function op_failed(data) {
+ex_failed.push((data) => {
     end_event = 'fail';
     if (obs_menu_event_switch) menu_event();
-}
+});
 
-function op_pause(data) {
+ex_pause.push((data) => {
     end_event = 'pause';
-}
+});
 
-function op_resume(data) {
+ex_resume.push((data) => {
     end_event = '';
-}
+});
 
-function op_hello(data) {
+ex_hello.push((data) => {
     end_event = '';
     if (data.status.beatmap && data.status.performance) {
         setTimeout(game_scene_change, 3000);
     } else {
         setTimeout(menu_scene_change, 3000);
     }
-}
+});
