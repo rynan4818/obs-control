@@ -2,6 +2,8 @@
 
 [Beat Saber Overlay 改良版](https://github.com/rynan4818/beat-saber-overlay)でOBS Studioのシーンコントロールをする追加スクリプトです。
 
+また、録画忘れ防止機能として、録画ボタンを押さないで譜面のプレイ開始をすると警告音が鳴る機能もあります。
+
 [サンプル動画](https://twitter.com/rynan4818/status/1383422547090284550)
 
 ※[Streamlabs OBS版はこちら](https://github.com/rynan4818/Streamlabs-obs-control)
@@ -68,6 +70,8 @@
     行頭が `const obs_` で始まる内容は必要に応じて変更します。
 
     デフォルト設定のまま使う場合は、メニューシーンのOBS Studioのシーン名を `BS-Game` ゲームシーンのシーン名を `BS-Menu` とします。
+    
+    シーン切り替え機能を使用せず、録画状態チェックのみ使用する場合は `obs_game_scene_name` と `obs_menu_scene_name` を普段BeatSaberで使用するシーン名にして、`obs_recording_check`を`true`にしてください。シーン切り替え忘れ防止、録画忘れ防止になります。
 
          const obs_address  = 'localhost:4444';         //基本的に変更不要
          const obs_password = '';                       //OBSにパスワード設定がある場合のみ設定
