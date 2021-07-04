@@ -1,4 +1,4 @@
-const obs_address  = 'localhost:4444';         //基本的に変更不要
+const obs_address  = '127.0.0.1:4444';         //基本的に変更不要
 const obs_password = '';                       //OBSにパスワード設定がある場合のみ設定
 const obs_game_scene_name  = 'BS-Game';        //ゲームシーン名
 const obs_menu_scene_name  = 'BS-Menu';        //メニューシーン名
@@ -18,157 +18,160 @@ const obs_pause_scene_name         = 'BS-Pause';     //Pause(ポーズ)用終了
 const obs_recording_check          = false;          //[true/false]trueにするとゲームシーン開始時に録画状態をチェックする。
 const obs_not_rec_sound            = 'file:///C://Windows//Media//Windows%20Notify%20Calendar.wav' //ゲームシーン開始時に録画されていない場合に鳴らす音(適当な音声ファイルをブラウザに貼り付けて、アドレス欄のURLをコピーする)
 
-let now_scene;
-let bs_menu_flag = true;
-let end_event = '';
+let obs_now_scene;
+let obs_bs_menu_flag = true;
+let obs_end_event = '';
 let obs;
-const not_rec_audio = new Audio(obs_not_rec_sound);
+let obs_timeout_id;
+const obs_not_rec_audio = new Audio(obs_not_rec_sound);
 
 function obs_connect() {
-    obs = new OBSWebSocket();
-    obs.connect({
-            address: obs_address,
-            password: obs_password
-        })
-        .then(() => {
-            console.log(`Success! We're connected & authenticated.`);
-                    obs.send('GetCurrentScene').then((data) => {
-                        now_scene = data.name;
-                    });
-            return;
-        })
-        .catch(err => { // Promise convention dicates you have a catch on every chain.
-            console.log(err);
-        });
+  obs = new OBSWebSocket();
+  obs.connect({
+    address: obs_address,
+    password: obs_password
+  })
+  .then(() => {
+    console.log(`Success! We're connected & authenticated.`);
+      obs.send('GetCurrentScene').then((data) => {
+        obs_now_scene = data.name;
+      });
+    return;
+  })
+  .catch(err => { // Promise convention dicates you have a catch on every chain.
+    console.log(err);
+  });
 
-    obs.on('ConnectionClosed', (data) => {
-        setTimeout(() => {
-          obs_connect();
-        }, 3000);
-    });
+  obs.on('ConnectionClosed', (data) => {
+    setTimeout(() => {
+      obs_connect();
+    }, 3000);
+  });
 
-    // You must add this handler to avoid uncaught exceptions.
-    obs.on('error', err => {
-        console.error('socket error:', err);
-    });
+  // You must add this handler to avoid uncaught exceptions.
+  obs.on('error', err => {
+    console.error('socket error:', err);
+  });
 }
 
 obs_connect();
 
-function recording_check() {
-    if (!obs_recording_check) return;
-    obs.send('GetRecordingStatus').then((data) => {
-        if (!data.isRecording || data.isRecordingPaused) not_rec_audio.play();
+function obs_rec_check() {
+  if (!obs_recording_check) return;
+  obs.send('GetRecordingStatus').then((data) => {
+    if (!data.isRecording || data.isRecordingPaused) obs_not_rec_audio.play();
+  });
+}
+
+function obs_scene_change(scene_name) {
+  if (scene_name != obs_now_scene) {
+    obs.send('SetCurrentScene', {
+      'scene-name': scene_name
     });
+  }
+  obs_now_scene = scene_name;
 }
 
-function scene_change(name) {
-    if (name != now_scene) {
-        obs.send('SetCurrentScene', {
-                'scene-name': name
-        });
-    }
-    now_scene = name;
+function obs_menu_scene_change() {
+  obs_scene_change(obs_menu_scene_name);
 }
 
-function menu_scene_change() {
-    scene_change(obs_menu_scene_name);
+function obs_game_scene_change() {
+  obs_scene_change(obs_game_scene_name);
 }
 
-function game_scene_change() {
-    scene_change(obs_game_scene_name);
-}
-
-function start_scene_change() {
+function obs_start_scene_change() {
   if (obs_start_scene_duration > 0) {
-        scene_change(obs_start_scene_name);
-    setTimeout(game_scene_change, obs_start_scene_duration * 1000);
+    obs_scene_change(obs_start_scene_name);
+    obs_timeout_id = setTimeout(obs_game_scene_change, obs_start_scene_duration * 1000);
   } else {
-    scene_change(obs_game_scene_name);
+    obs_scene_change(obs_game_scene_name);
   }
 }
 
 ex_songStart.push((data) => {
-    end_event = '';
-    if (bs_menu_flag) {
-        recording_check()
-        if (obs_game_event_delay > 0) {
-            setTimeout(start_scene_change, obs_game_event_delay);
-        } else {
-            start_scene_change();
-        }
+  obs_end_event = '';
+  if (obs_bs_menu_flag) {
+    clearTimeout(obs_timeout_id);
+    obs_bs_menu_flag = false;
+    obs_rec_check();
+    if (obs_game_event_delay > 0) {
+      obs_timeout_id = setTimeout(obs_start_scene_change, obs_game_event_delay);
+    } else {
+      obs_start_scene_change();
     }
-    bs_menu_flag = false;
+  }
 });
 
-function end_scene_change() {
-  let end_scene_duration = 0;
-  switch (end_event) {
+function obs_end_scene_change() {
+  let obs_end_scene_duration = 0;
+  switch (obs_end_event) {
     case 'fullcombo':
-      end_scene_duration = obs_fullcombo_scene_duration;
-      if (end_scene_duration > 0) scene_change(obs_fullcombo_scene_name);
+      obs_end_scene_duration = obs_fullcombo_scene_duration;
+      if (obs_end_scene_duration > 0) obs_scene_change(obs_fullcombo_scene_name);
       break;
     case 'finish':
-      end_scene_duration = obs_finish_scene_duration;
-      if (end_scene_duration > 0) scene_change(obs_finish_scene_name);
+      obs_end_scene_duration = obs_finish_scene_duration;
+      if (obs_end_scene_duration > 0) obs_scene_change(obs_finish_scene_name);
       break;
     case 'fail':
-      end_scene_duration = obs_fail_scene_duration;
-      if (end_scene_duration > 0) scene_change(obs_fail_scene_name);
+      obs_end_scene_duration = obs_fail_scene_duration;
+      if (obs_end_scene_duration > 0) obs_scene_change(obs_fail_scene_name);
       break;
     case 'pause':
-      end_scene_duration = obs_pause_scene_duration;
-      if (end_scene_duration > 0) scene_change(obs_pause_scene_name);
+      obs_end_scene_duration = obs_pause_scene_duration;
+      if (obs_end_scene_duration > 0) obs_scene_change(obs_pause_scene_name);
   }
-  if (end_scene_duration > 0) {
-    setTimeout(menu_scene_change, end_scene_duration * 1000);
+  if (obs_end_scene_duration > 0) {
+    obs_timeout_id = setTimeout(obs_menu_scene_change, obs_end_scene_duration * 1000);
   } else {
-    scene_change(obs_menu_scene_name);
+    obs_scene_change(obs_menu_scene_name);
   }
 }
 
-function menu_event() {
-  if (!bs_menu_flag) {
+function obs_menu_event() {
+  if (!obs_bs_menu_flag) {
+    clearTimeout(obs_timeout_id);
+    obs_bs_menu_flag = true;
     if (obs_menu_event_delay > 0) {
-      setTimeout(end_scene_change, obs_menu_event_delay);
+      obs_timeout_id = setTimeout(obs_end_scene_change, obs_menu_event_delay);
     } else {
-      end_scene_change();
+      obs_end_scene_change();
     }
   }
-  bs_menu_flag = true;
 }
 
 ex_menu.push((data) => {
-    menu_event();
+  obs_menu_event();
 });
 
 ex_finished.push((data) => {
-    if (data.status.performance.passedNotes === data.status.performance.combo) {
-        end_event = 'fullcombo';
-    } else {
-        end_event = 'finish';
-    }
-    if (obs_menu_event_switch) menu_event();
+  if (data.status.performance.passedNotes === data.status.performance.combo) {
+    obs_end_event = 'fullcombo';
+  } else {
+    obs_end_event = 'finish';
+  }
+  if (obs_menu_event_switch) obs_menu_event();
 });
 
 ex_failed.push((data) => {
-    end_event = 'fail';
-    if (obs_menu_event_switch) menu_event();
+  obs_end_event = 'fail';
+  if (obs_menu_event_switch) obs_menu_event();
 });
 
 ex_pause.push((data) => {
-    end_event = 'pause';
+  obs_end_event = 'pause';
 });
 
 ex_resume.push((data) => {
-    end_event = '';
+  obs_end_event = '';
 });
 
 ex_hello.push((data) => {
-    end_event = '';
-    if (data.status.beatmap && data.status.performance) {
-        setTimeout(game_scene_change, 3000);
-    } else {
-        setTimeout(menu_scene_change, 3000);
-    }
+  obs_end_event = '';
+  if (data.status.beatmap && data.status.performance) {
+    obs_timeout_id = setTimeout(obs_game_scene_change, 3000);
+  } else {
+    obs_timeout_id = setTimeout(obs_menu_scene_change, 3000);
+  }
 });
