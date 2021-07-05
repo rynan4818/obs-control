@@ -77,7 +77,7 @@
     
     シーン切り替え機能を使用せず、録画状態チェックのみ使用する場合は `obs_game_scene_name` と `obs_menu_scene_name` を普段BeatSaberで使用するシーン名にして、`obs_recording_check`を`true`にしてください。シーン切り替え忘れ防止、録画忘れ防止になります。
 
-         const obs_address  = 'localhost:4444';         //基本的に変更不要
+         const obs_address  = '127.0.0.1:4444';         //基本的に変更不要
          const obs_password = '';                       //OBSにパスワード設定がある場合のみ設定
          const obs_game_scene_name  = 'BS-Game';        //ゲームシーン名
          const obs_menu_scene_name  = 'BS-Menu';        //メニューシーン名
