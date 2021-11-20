@@ -18,11 +18,13 @@
 
  1. OBS Studioにobs-websocketをインストールします
 
-    配布サイト：https://github.com/Palakis/obs-websocket/releases
+    配布サイト：https://github.com/obsproject/obs-websocket/releases/tag/4.9.1
 
-    から、最新のリリースの
-    obs-websocket-＊.＊.＊-Windows-Installer.exe  (*は最新バージョンを選択)
+    から、ページの一番下にあるAssetsの
+    obs-websocket-4.9.1-Windows-Installer.exe
     をダウンロードしてインストールします
+
+    **obs-websocket 5.0.0以降は対応していませんので、4.9.1を使用して下さい**
 
  2. OBS Studioを起動してメニューの`ツール`にある`Websocketサーバ設定`を開いて`WebSocketsサーバを有効にする`をチェックします。また、サーバーポートが`4444`になっているか確認します。(4444と違う場合は、4444に修正するか後述する本ツールの設定でポート番号を指定します。)
 
