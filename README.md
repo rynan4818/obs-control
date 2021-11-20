@@ -56,7 +56,7 @@
     - `js` フォルダに、`obs-control.js` と `obs-websocket.js` の２つ
     - インストールフォルダの `index.html` を本ツールの物に差し替え(上書き)
 
-    本ツールは、Beat Saber Overlay 改良版の[Release v2021/05/09](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F05%2F09)を元にしています。
+    本ツールは、Beat Saber Overlay 改良版の[Release v2021/05/09](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F05%2F09)～[Release v2021/10/10](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F10%2F10)を元にしています。
 
     オーバーレイがそれ以外のバージョンになっている場合、`index.html` を上書きするとおかしくなる場合があります。
     
@@ -79,7 +79,7 @@
     
     シーン切り替え機能を使用せず、録画状態チェックのみ使用する場合は `obs_game_scene_name` と `obs_menu_scene_name` を普段BeatSaberで使用するシーン名にして、`obs_recording_check`を`true`にしてください。シーン切り替え忘れ防止、録画忘れ防止になります。
 
-         const obs_address  = 'localhost:4444';         //基本的に変更不要
+         const obs_address  = '127.0.0.1:4444';         //基本的に変更不要
          const obs_password = '';                       //OBSにパスワード設定がある場合のみ設定
          const obs_game_scene_name  = 'BS-Game';        //ゲームシーン名
          const obs_menu_scene_name  = 'BS-Menu';        //メニューシーン名
