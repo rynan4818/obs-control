@@ -24,6 +24,12 @@ let obs_end_event = '';
 let obs;
 let obs_timeout_id;
 let obs_full_combo = true;
+let song_scene_list = false;
+let song_scene = false;
+let song_scene_next_time = false;
+let song_scene_next_name = "";
+let song_scene_start_change = true;
+let song_scene_end_change = true;
 const obs_not_rec_audio = new Audio(obs_not_rec_sound);
 
 function obs_connect() {
@@ -90,6 +96,60 @@ function obs_start_scene_change() {
   }
 }
 
+if (typeof song_scene_json !== "undefined"){
+  song_scene_list = JSON.parse(song_scene_json);
+}
+
+function song_scene_check(data) {
+  if (song_scene_list === false) return;
+  for(let i = 0; i < song_scene_list.length; i++){
+    if (data.status.beatmap.songHash.toUpperCase() === song_scene_list[i].hash.toUpperCase()){
+      song_scene = song_scene_list[i].timelist;
+      song_scene_start_change = song_scene_list[i].startchange;
+      song_scene_end_change = song_scene_list[i].endchange;
+      song_scene_next();
+      return;
+    }
+  }
+  song_scene_start_change = true;
+  song_scene_end_change = true;
+}
+
+function time_msce_cnv(str) {
+  let sec = 0;
+  let msec = 0;
+  let min = str.split(':', 2)
+  if (typeof min[1] !== 'undefined') {
+    sec = min[1].split('.', 2)
+    if (typeof sec[1] !== 'undefined') {
+      msec = parseInt(sec[1], 10);
+    }
+    sec = parseInt(sec[0], 10) * 1000;
+  }
+  min = parseInt(min[0], 10) * 60 * 1000;
+  return min + sec + msec;
+}
+
+function song_scene_next(){
+  let next_scene = song_scene.shift();
+  if (typeof next_scene === "undefined"){
+    song_scene_next_time = false;
+    song_scene_next_name = "";
+  } else {
+    song_scene_next_time = time_msce_cnv(next_scene.time);
+    song_scene_next_name = next_scene.scene;
+  }
+}
+
+ex_timer_update.push((time, delta, progress, percentage) => {
+  if (song_scene === false) return;
+  if (song_scene_next_time === false) return;
+  if (delta >= song_scene_next_time){
+    obs_scene_change(song_scene_next_name);
+    song_scene_next();
+  }
+});
+
 ex_songStart.push((data) => {
   obs_end_event = '';
   obs_full_combo = true;
@@ -97,10 +157,13 @@ ex_songStart.push((data) => {
     clearTimeout(obs_timeout_id);
     obs_bs_menu_flag = false;
     obs_rec_check();
-    if (obs_game_event_delay > 0) {
-      obs_timeout_id = setTimeout(obs_start_scene_change, obs_game_event_delay);
-    } else {
-      obs_start_scene_change();
+    song_scene_check(data);
+  if (song_scene_start_change) {
+      if (obs_game_event_delay > 0) {
+        obs_timeout_id = setTimeout(obs_start_scene_change, obs_game_event_delay);
+      } else {
+        obs_start_scene_change();
+      }
     }
   }
 });
@@ -135,10 +198,12 @@ function obs_menu_event() {
   if (!obs_bs_menu_flag) {
     clearTimeout(obs_timeout_id);
     obs_bs_menu_flag = true;
-    if (obs_menu_event_delay > 0) {
-      obs_timeout_id = setTimeout(obs_end_scene_change, obs_menu_event_delay);
-    } else {
-      obs_end_scene_change();
+    if (song_scene_end_change){
+      if (obs_menu_event_delay > 0) {
+        obs_timeout_id = setTimeout(obs_end_scene_change, obs_menu_event_delay);
+      } else {
+        obs_end_scene_change();
+      }
     }
   }
 }
