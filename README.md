@@ -173,7 +173,7 @@
         ]
       }   //最後は,不要
     ]
-    `;                                                        //バックスラッシュまでででJSONデータ終了
+    `;                                                        //バックスラッシュまででJSONデータ終了
 
 1. `song-scene.js`の中身の``(バッククオート)内をJSONデータで作成します。
 2. 1曲ごとに、[オブジェクト](https://github.com/rynan4818/obs-control/blob/main/js/song-scene.js#L3-L17)の配列にして下さい。
