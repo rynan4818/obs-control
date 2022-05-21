@@ -100,6 +100,94 @@
          const obs_not_rec_sound            = 'file:///C://Windows//Media//Windows%20Notify%20Calendar.wav' //ゲームシーン開始時に録画されていない場合に鳴らす音(適当な音声ファイルをブラウザに貼り付けて、アドレス欄のURLをコピーする)
 
  7. あとは通常通りOBS Studioで記録・配信すればＯＫです。
+## 曲専用シーン切り替えについて
+曲専用にゲームスタート・エンド及びプレイ中の曲時間に合わせてシーン切り替えが可能です。
+
+通常は曲専用シーン切り替えは無効になっています。有効にするには、`index.html` をメモ帳（エディタ）で開いて
+
+    <script src='./js/obs-control.js'></script>
+
+[の行の**上に**](https://github.com/rynan4818/obs-control/blob/main/index.html#L114)
+
+    <script src='./js/song-scene.js'></script>
+
+を追加して保存して下さい。
+
+次に`js`フォルダの`song-scene.js` ファイルに曲ごとのシーン切り替え情報を設定します。
+
+    const song_scene_json = `                                 //バックスラッシュからJSONデータ開始
+    [
+      {                                                       //１譜面目の情報
+        "hash": "06121351C6BC732112B20D2C524FB84C036DDF5E",   //譜面のハッシュ値
+        "startchange": true,                                  //開始時にデフォルトのゲーム中用シーンに true:切り替える false:切り替えない
+        "endchange": true,                                    //終了時にデフォルトのメニュー用シーンに true:切り替える false:切り替えない
+        "timelist": [                                         //曲時間で切り替えるシーンを必要な数並べる
+          {
+             "time": "0:10.500",                              //譜面の曲時間0分10.5秒でTEST3シーン切り替え
+             "scene": "TEST3"
+          },
+          {
+             "time": "0:20",                                  //譜面の曲時間0分20秒でTEST1シーンに切り替え
+             "scene": "TEST1"
+          }  //最後は,不要
+        ]
+      },
+      {                                                       //２譜面目の情報
+        "hash": "02D18079CE5C7D0179DADD9D77A3D8C729D8C1D8",
+        "startchange": true,
+        "gamescene": "GAME",                                  //開始時に曲専用のGAMEシーンに切り替える
+        "endchange": true,
+        "menuscene": "MENU",                                  //終了時に曲専用のMENUシーンに切り替える
+        "timelist": [
+          {
+             "time": "0:10.500", 
+             "scene": "TEST3"
+          }
+        ]
+      },
+      {                                                       //３譜面目の情報
+        "hash": "6D1FA74C517A03EA76170345789C85F9077DC7A4",
+        "startchange": true,
+        "gamescene": "GAME",
+        "startscene" : "START",                               //開始時に曲専用のSTARTシーンを3秒間表示してGAMEシーンに切り替える
+        "startduration" : 3,                                  //※duration値を0にするとスタートシーンを無効
+        "endchange": true,
+        "menuscene": "MENU",
+        "endscene": "END",                                    //終了時に曲専用のENDシーンを3秒間表示してMENUシーンに切り替える
+        "endduration" : 3,
+        "timelist": [
+          {
+             "time": "0:15", 
+             "scene": "TEST2"
+          },
+          {
+             "time": "0:20.550",
+             "scene": "TEST3"
+          },
+          {
+             "time": "0:50",
+             "scene": "TEST4"
+          }
+        ]
+      }   //最後は,不要
+    ]
+    `;                                                        //バックスラッシュまででがJSONデータ終了
+
+1. `song-scene.js`の中身の``(バッククオート)内をJSONデータで作成します。
+2. 1曲ごとに、[オブジェクト](https://github.com/rynan4818/obs-control/blob/main/js/song-scene.js#L3-L17)の配列にして下さい。
+3. `hash`は譜面のハッシュ値です。ScoreSaberの譜面ページなどで確認するのが簡単です。
+![image](https://user-images.githubusercontent.com/14249877/169330094-ac49bc86-3798-4288-9427-924b8036f347.png)
+4. `startchange`は、その譜面でゲーム開始時にシーン切り替えを有効・無効の選択をします。trueで有効、falseで無効です。
+5. `endchange`は、譜面の終了時のシーン切り替えの有効・無効です。
+6. `timelist`を各時間ごとにシーン名を入れた[オブジェクト](https://github.com/rynan4818/obs-control/blob/main/js/song-scene.js#L8-L11)の配列にします。
+7. `time`は "分:秒.ミリ秒"です。ミリ秒、秒は省略可能です。
+8. `scene`は 切り替えるシーン名です。
+9. `gamescene`は、曲専用のゲーム中シーンがあれば設定します。省略時はデフォルトが有効になります。
+10. `startscene`は、曲専用のスタートシーンがあれば設定します。設定時は次の`startduration`も設定して下さい。省略時はデフォルト値が有効になります。
+11. `startduration`は、曲専用のスタートシーンの表示秒数です。0を指定するとデフォルトでスタートシーンが設定されている場合に無効になります。
+12. `menuscene`は、曲専用のメニューに戻った時のシーンを設定します。省略時はデフォルトが有効になります。
+13. `endscene`は、曲専用の終了シーンがあれば設定します。設定時は次の`endduration`も設定して下さい。省略時はデフォルト値が有効になります。曲専用はクリア条件等に関係なく固定です。
+14. `endduration`は、曲専用の終了シーンの表示秒数です。0を指定するとデフォルトで終了シーンが設定されている場合は無効になります。
 
 ## ライセンス
 
