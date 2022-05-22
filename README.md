@@ -58,7 +58,7 @@
 
  5. 3.でインストールしたオーバーレイのフォルダに、本ツールのファイルをコピーしてください。
 
-    - `js` フォルダに、`obs-control.js` と `obs-websocket.js` の２つ
+    - `js` フォルダに、`obs-control.js` と `obs-websocket.js` の２つ  ※obs-websocket.jsはRelease 2022/05/22以降は不要
     - インストールフォルダの `index.html` を本ツールの物に差し替え(上書き)
 
     本ツールは、Beat Saber Overlay 改良版の[Release v2021/05/09](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F05%2F09)～[Release v2022/04/25](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2022%2F04%2F25)を元にしています。
