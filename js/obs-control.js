@@ -1,5 +1,3 @@
-const obs_address  = '127.0.0.1:4444';         //基本的に変更不要
-const obs_password = '';                       //OBSにパスワード設定がある場合のみ設定
 const obs_game_scene_name  = 'BS-Game';        //ゲームシーン名
 const obs_menu_scene_name  = 'BS-Menu';        //メニューシーン名
 const obs_game_event_delay = 0;                //ゲームシーン開始タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
@@ -18,10 +16,10 @@ const obs_pause_scene_name         = 'BS-Pause';     //Pause(ポーズ)用終了
 const obs_recording_check          = false;          //[true/false]trueにするとゲームシーン開始時に録画状態をチェックする。
 const obs_not_rec_sound            = 'file:///C://Windows//Media//Windows%20Notify%20Calendar.wav' //ゲームシーン開始時に録画されていない場合に鳴らす音(適当な音声ファイルをブラウザに貼り付けて、アドレス欄のURLをコピーする)
 
+let obs_browser_check = false;
 let obs_now_scene;
 let obs_bs_menu_flag = true;
 let obs_end_event = '';
-let obs;
 let obs_timeout_id;
 let obs_full_combo = true;
 let song_scene_list = false;
@@ -39,49 +37,43 @@ let song_scene_end_name = false;
 let song_scene_end_duration = false;
 const obs_not_rec_audio = new Audio(obs_not_rec_sound);
 
-function obs_connect() {
-  obs = new OBSWebSocket();
-  obs.connect({
-    address: obs_address,
-    password: obs_password
-  })
-  .then(() => {
-    console.log(`Success! We're connected & authenticated.`);
-      obs.send('GetCurrentScene').then((data) => {
-        obs_now_scene = data.name;
-      });
-    return;
-  })
-  .catch(err => { // Promise convention dicates you have a catch on every chain.
-    console.log(err);
+// obs-browser Documents : https://github.com/obsproject/obs-browser
+if (window.obsstudio) {
+	window.obsstudio.getControlLevel(function (level) {
+    //Level - The level of permissions. 0 for NONE, 1 for READ_OBS (OBS data), 2 for READ_USER (User data), 3 for BASIC, 4 for ADVANCED and 5 for ALL
+    if (level >= 4) {
+      obs_browser_check = true;
+    } else {
+      console.log("Webpage control permissions are missing");
+      var element = document.createElement("div") ;
+      element.innerHTML = "Webpage control permissions are missing. <br>Please change to ADVANCED or higher.<br><br>ブラウザソースのプロパティでページ権限が不足しています。<br>OBSへの高度なアクセス以上に設定して下さい。";
+      element.style = "display: block;font-size: 20px;font-weight: 700;line-height: 41px; letter-spacing: 2px; margin: 0 0 0 10px; color: red";
+      document.body.appendChild(element);
+    }
   });
-
-  obs.on('ConnectionClosed', (data) => {
-    setTimeout(() => {
-      obs_connect();
-    }, 3000);
-  });
-
-  // You must add this handler to avoid uncaught exceptions.
-  obs.on('error', err => {
-    console.error('socket error:', err);
-  });
+} else {
+	console.log("!Not OBS Studio!");
+  var element = document.createElement("div") ;
+  element.innerHTML = "!Not OBS Studio!";
+  element.style = "display: block;font-size: 34px;font-weight: 700;line-height: 41px; letter-spacing: 2px; margin: 5px 0 0 20px; color: red";
+  document.body.appendChild(element);
 }
-
-obs_connect();
 
 function obs_rec_check() {
   if (!obs_recording_check) return;
-  obs.send('GetRecordingStatus').then((data) => {
-    if (!data.isRecording || data.isRecordingPaused) obs_not_rec_audio.play();
-  });
+  if (!obs_browser_check) return;
+	window.obsstudio.getStatus(function (status) {
+		//status -> {recording: false, recordingPaused: false, replaybuffer: false, streaming: false, virtualcam: false}
+    if (!status.recording || status.recordingPaused){
+      obs_not_rec_audio.play();
+    }
+	});
 }
 
 function obs_scene_change(scene_name) {
+  if (!obs_browser_check) return;
   if (scene_name != obs_now_scene) {
-    obs.send('SetCurrentScene', {
-      'scene-name': scene_name
-    });
+    window.obsstudio.setCurrentScene(scene_name);
   }
   obs_now_scene = scene_name;
 }
