@@ -16,6 +16,8 @@
 
 ## 使用方法
 
+**Release 2022/05/22以降は、obs-websocketが不要になりました。手順3.から始めて下さい**
+
  1. OBS Studioにobs-websocketをインストールします
 
     配布サイト：https://github.com/obsproject/obs-websocket/releases/tag/4.9.1
@@ -66,7 +68,7 @@
 
     の上の行に
 
-        <script src='./js/obs-websocket.js'></script>
+        <script src='./js/obs-websocket.js'></script>  ※Release 2022/05/22以降はobs-websocket.jsは不要
         <script src='./js/obs-control.js'></script>
 
     の２つを追加してください。
@@ -79,8 +81,8 @@
     
     シーン切り替え機能を使用せず、録画状態チェックのみ使用する場合は `obs_game_scene_name` と `obs_menu_scene_name` を普段BeatSaberで使用するシーン名にして、`obs_recording_check`を`true`にしてください。シーン切り替え忘れ防止、録画忘れ防止になります。
 
-         const obs_address  = '127.0.0.1:4444';         //基本的に変更不要
-         const obs_password = '';                       //OBSにパスワード設定がある場合のみ設定
+         const obs_address  = '127.0.0.1:4444';         //基本的に変更不要                       ※Release 2022/05/22以降はこの項目は無し
+         const obs_password = '';                       //OBSにパスワード設定がある場合のみ設定    ※Release 2022/05/22以降はこの項目は無し
          const obs_game_scene_name  = 'BS-Game';        //ゲームシーン名
          const obs_menu_scene_name  = 'BS-Menu';        //メニューシーン名
          const obs_game_event_delay = 0;                //ゲームシーン開始タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
