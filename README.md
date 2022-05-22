@@ -50,6 +50,9 @@
     **注意点として `表示されていないときにソースをシャットダウン` と `シーンがアクティブになったときにブラウザの表示を更新` の２つはチェックしないで下さい**
 
     ![preview](https://rynan4818.github.io/obs-control2.png)
+    
+    Release 2022/05/22以降は、ページ権限を**OBSへの高度なアクセス**にして下さい。
+    ![image](https://user-images.githubusercontent.com/14249877/169675883-fc8496ff-4439-4807-9f34-4950b077c907.png)
 
  4. 本ツールの[リリースページ](https://github.com/rynan4818/obs-control/releases)から最新リリースをダウンロードします。
 
