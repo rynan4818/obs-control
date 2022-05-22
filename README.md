@@ -70,11 +70,19 @@
         <script src="./js/options.js"></script>
 
     の上の行に
+    
+    **Release 2022/05/21まで**のバージョンは
 
-        <script src='./js/obs-websocket.js'></script>  ※Release 2022/05/22以降はobs-websocket.jsは不要
+        <script src='./js/obs-websocket.js'></script>
         <script src='./js/obs-control.js'></script>
 
     の２つを追加してください。
+    
+    **Release 2022/05/22以降**は
+    
+        <script src='./js/obs-control.js'></script>
+    
+    の１つを追加して下さい。
 
  6. オーバーレイの `js` フォルダにコピーした `obs-control.js` をメモ帳で開きます
 
