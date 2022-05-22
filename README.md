@@ -56,7 +56,7 @@
     - `js` フォルダに、`obs-control.js` と `obs-websocket.js` の２つ
     - インストールフォルダの `index.html` を本ツールの物に差し替え(上書き)
 
-    本ツールは、Beat Saber Overlay 改良版の[Release v2021/05/09](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F05%2F09)～[Release v2021/10/10](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F10%2F10)を元にしています。
+    本ツールは、Beat Saber Overlay 改良版の[Release v2021/05/09](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F05%2F09)～[Release v2022/04/25](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2022%2F04%2F25)を元にしています。
 
     オーバーレイがそれ以外のバージョンになっている場合、`index.html` を上書きするとおかしくなる場合があります。
     
@@ -103,7 +103,8 @@
 ## 曲専用シーン切り替えについて
 曲専用にゲームスタート・エンド及びプレイ中の曲時間に合わせてシーン切り替えが可能です。
 
-**本家のBeat Saber HTTP Statusは、曲時間が同期しないのでズレる可能性が高いです。HttpSiraStatusは毎秒同期するため基本的にズレません。HttpSiraStatusの使用をオススメします**
+**本家のBeat Saber HTTP Statusは、曲時間が同期しないのでズレる可能性が高いです。HttpSiraStatusは毎秒同期するため基本的にズレません。HttpSiraStatusの使用をオススメします。**
+また、曲時間の同期はBeat Saber Overlay 改良版のRelease v2021/10/10以降で有効です。
 
 通常は曲専用シーン切り替えは無効になっています。有効にするには、`index.html` をメモ帳（エディタ）で開いて
 
@@ -118,14 +119,14 @@
 次に`js`フォルダの`song-scene.js` ファイルに曲ごとのシーン切り替え情報を設定します。
 
     const song_scene_json = `                                 //バックスラッシュからJSONデータ開始
-    [
+    [                                                         //設定したい譜面の数だけ並べる
       {                                                       //１譜面目の情報
         "hash": "06121351C6BC732112B20D2C524FB84C036DDF5E",   //譜面のハッシュ値
         "startchange": true,                                  //開始時にデフォルトのゲーム中用シーンに true:切り替える false:切り替えない
         "endchange": true,                                    //終了時にデフォルトのメニュー用シーンに true:切り替える false:切り替えない
         "timelist": [                                         //曲時間で切り替えるシーンを必要な数並べる
           {
-             "time": "0:10.500",                              //譜面の曲時間0分10.5秒でTEST3シーン切り替え
+             "time": "0:10.500",                              //譜面の曲時間0分10.5秒でTEST3シーン切り替え(10.5秒は10.500として下さい。10.5だと10.005秒になります)
              "scene": "TEST3"
           },
           {
@@ -173,7 +174,7 @@
         ]
       }   //最後は,不要
     ]
-    `;                                                        //バックスラッシュまででがJSONデータ終了
+    `;                                                        //バックスラッシュまででJSONデータ終了
 
 1. `song-scene.js`の中身の``(バッククオート)内をJSONデータで作成します。
 2. 1曲ごとに、[オブジェクト](https://github.com/rynan4818/obs-control/blob/main/js/song-scene.js#L3-L17)の配列にして下さい。
@@ -182,7 +183,7 @@
 4. `startchange`は、その譜面でゲーム開始時にシーン切り替えを有効・無効の選択をします。trueで有効、falseで無効です。
 5. `endchange`は、譜面の終了時のシーン切り替えの有効・無効です。
 6. `timelist`を各時間ごとにシーン名を入れた[オブジェクト](https://github.com/rynan4818/obs-control/blob/main/js/song-scene.js#L8-L11)の配列にします。
-7. `time`は "分:秒.ミリ秒"です。ミリ秒、秒は省略可能です。
+7. `time`は "分:秒.ミリ秒"です。ミリ秒、秒は省略可能です。(小数点以下はミリ秒なので、0.5秒は0.500にして下さい。)
 8. `scene`は 切り替えるシーン名です。
 9. `gamescene`は、曲専用のゲーム中シーンがあれば設定します。省略時はデフォルトが有効になります。
 10. `startscene`は、曲専用のスタートシーンがあれば設定します。設定時は次の`startduration`も設定して下さい。省略時はデフォルト値が有効になります。
