@@ -205,6 +205,16 @@
 13. `endscene`は、曲専用の終了シーンがあれば設定します。設定時は次の`endduration`も設定して下さい。省略時はデフォルト値が有効になります。曲専用はクリア条件等に関係なく固定です。
 14. `endduration`は、曲専用の終了シーンの表示秒数です。0を指定するとデフォルトで終了シーンが設定されている場合は無効になります。
 
+## 開発者向け情報
+
+Release 2022/05/22以降は、最近のOBS Studioにデフォルトで内蔵された[obs-browser](https://github.com/obsproject/obs-browser)の機能を使用しています。
+
+obs-browserの機能デバッグにはOBSでの動作が必須のため、通常のブラウザを使ったデバッグが出来ません。OBS Studioの起動オプションに
+
+    --remote-debugging-port=44444   ※44444は任意のポート番号
+
+を付けて起動すると、ブラウザから`http://localhost:44444/`でアクセスしてDevToolを使ってデバッグが可能です。
+
 ## ライセンス
 
 本ツールのライセンスは[MITライセンス](https://github.com/rynan4818/obs-control/blob/main/LICENSE)を適用します
