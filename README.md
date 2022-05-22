@@ -68,7 +68,7 @@
 
     の上の行に
 
-        <script src='./js/obs-websocket.js'></script>
+        <script src='./js/obs-websocket.js'></script>  ※Release 2022/05/22以降はobs-websocket.jsは不要
         <script src='./js/obs-control.js'></script>
 
     の２つを追加してください。
