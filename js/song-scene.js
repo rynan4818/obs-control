@@ -16,7 +16,7 @@ const song_scene_json = `
     ]
   },
   {
-    "hash": "02D18079CE5C7D0179DADD9D77A3D8C729D8C1D8",
+    "songname": "Mainichi Kashimashi Pharmacy",
     "startchange": true,
     "gamescene": "GAME",
     "endchange": true,

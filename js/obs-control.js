@@ -2,7 +2,7 @@ const obs_game_scene_name  = 'BS-Game';        //ゲームシーン名
 const obs_menu_scene_name  = 'BS-Menu';        //メニューシーン名
 const obs_game_event_delay = 0;                //ゲームシーン開始タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
 const obs_menu_event_delay = 0;                //ゲームシーン終了(メニューに戻る)タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
-const obs_menu_event_switch = false;           //[true/false]ゲームシーン終了タイミングをfinish/failした瞬間に変更する場合は true にします。約1秒程度早まりますのでobs_menu_event_delayと合わせて終了タイミングの微調整に使えます。
+const obs_menu_event_switch = false;           //[true/false]ゲームシーン終了タイミングをfinish/failした瞬間に変更する場合は true にします。約3~4秒程度早まりますのでobs_menu_event_delayと合わせて終了タイミングの微調整に使えます。
 const obs_start_scene_duration     = 0;              //ゲームシーンに切り替える前に開始シーンを表示する時間(秒単位[小数3位までOK]) [0の場合は無効]
 const obs_start_scene_name         = 'BS-Start';     //開始シーン名  ※使用時はobs_start_scene_durationの設定要
 const obs_finish_scene_duration    = 0;              //Finish(クリア)時にメニューシーンに切替わる前に終了シーンを表示する時間(秒単位[小数3位までOK]) [0の場合は無効]
@@ -15,6 +15,9 @@ const obs_pause_scene_duration     = 0;              //Pause(ポーズ)してメ
 const obs_pause_scene_name         = 'BS-Pause';     //Pause(ポーズ)用終了シーン名  ※使用時はobs_pause_scene_durationの設定要
 const obs_recording_check          = false;          //[true/false]trueにするとゲームシーン開始時に録画状態をチェックする。
 const obs_not_rec_sound            = 'file:///C://Windows//Media//Windows%20Notify%20Calendar.wav' //ゲームシーン開始時に録画されていない場合に鳴らす音(適当な音声ファイルをブラウザに貼り付けて、アドレス欄のURLをコピーする)
+const obs_option1_scene_name = 'BS-Option1';   //HttpPlayButtonStatus の "Option Scene 1"ボタンシーン名
+const obs_option2_scene_name = 'BS-Option2';   //HttpPlayButtonStatus の "Option Scene 2"ボタンシーン名
+const obs_option3_scene_name = 'BS-Option3';   //HttpPlayButtonStatus の "Option Scene 3"ボタンシーン名
 
 let obs_browser_check = false;
 let obs_now_scene;
@@ -22,6 +25,7 @@ let obs_bs_menu_flag = true;
 let obs_end_event = '';
 let obs_timeout_id;
 let obs_full_combo = true;
+let obs_scene_change_enable = true;
 let song_scene_list = false;
 let song_scene_next_time = false;
 let song_scene_next_name = "";
@@ -110,7 +114,7 @@ if (typeof song_scene_json !== "undefined"){
   song_scene_list = JSON.parse(song_scene_json);
 }
 
-function song_scene_check(data) {
+function song_scene_check(songHash, songName) {
   if (song_scene_list === false) return;
   song_scene_next_time = false;
   song_scene_next_name = "";
@@ -125,7 +129,20 @@ function song_scene_check(data) {
   song_scene_end_name = false;
   song_scene_end_duration = false;
   for(let i = 0; i < song_scene_list.length; i++){
-    if (data.status.beatmap.songHash.toUpperCase() === song_scene_list[i].hash.toUpperCase()){
+    let song_scene_check_string;
+    let now_song_string;
+    if (typeof song_scene_list[i].hash !== "undefined" && typeof songHash !== "undefined" && songHash !== null){
+      song_scene_check_string = song_scene_list[i].hash.toUpperCase();
+      now_song_string = songHash.toUpperCase();
+    } else {
+      if (typeof song_scene_list[i].songname !== "undefined" && typeof songName != "undefined"){
+        song_scene_check_string = song_scene_list[i].songname;
+        now_song_string = songName;
+      } else {
+        continue;
+      }
+    }
+    if (now_song_string === song_scene_check_string){
       if (typeof song_scene_list[i].timelist !== "undefined") song_scene_time_list = song_scene_list[i].timelist;
       if (typeof song_scene_list[i].startchange !== "undefined") song_scene_start_change = song_scene_list[i].startchange;
       if (typeof song_scene_list[i].endchange !== "undefined") song_scene_end_change = song_scene_list[i].endchange;
@@ -178,19 +195,64 @@ ex_timer_update.push((time, delta, progress, percentage) => {
   }
 });
 
-ex_songStart.push((data) => {
+function obs_playStart_event2(){
+  obs_rec_check();
+  if (song_scene_start_change) {
+    if (obs_game_event_delay > 0) {
+      obs_timeout_id = setTimeout(obs_start_scene_change, obs_game_event_delay);
+    } else {
+      obs_start_scene_change();
+    }
+  }
+}
+
+function obs_playStart_event(songHash, songName, delay = 0) {
+  if (!obs_scene_change_enable) return;
   obs_end_event = '';
   obs_full_combo = true;
   if (obs_bs_menu_flag) {
     clearTimeout(obs_timeout_id);
     obs_bs_menu_flag = false;
-    obs_rec_check();
-    song_scene_check(data);
-  if (song_scene_start_change) {
-      if (obs_game_event_delay > 0) {
-        obs_timeout_id = setTimeout(obs_start_scene_change, obs_game_event_delay);
+    song_scene_check(songHash, songName);
+    if (typeof delay === "undefined") delay = 0;
+    if (delay > 0){
+      obs_timeout_id = setTimeout(obs_playStart_event2, delay * 1000);
+    } else{
+      obs_playStart_event2()
+    }
+  }
+}
+
+ex_songStart.push((data) => {
+  obs_playStart_event(data.status.beatmap.songHash, data.status.beatmap.songName);
+});
+
+ex_other.push((data) => {
+  if (typeof data.other !== "undefined") {
+    if (typeof data.other.HttpPlayButtonStatus !== "undefined") {
+      if (typeof data.other.HttpPlayButtonStatus.OptionScene === "undefined"){
+        if (typeof data.other.HttpPlayButtonStatus.SceneChange !== "undefined") obs_scene_change_enable = data.other.HttpPlayButtonStatus.SceneChange;
+        if (typeof data.other.HttpPlayButtonStatus.PlayStart !== "undefined" && data.other.HttpPlayButtonStatus.PlayStart) {
+          obs_playStart_event(data.other.HttpPlayButtonStatus.SongHash, data.other.HttpPlayButtonStatus.SongName, data.other.HttpPlayButtonStatus.PlayButtonDelay);
+        }
+        if (typeof data.other.HttpPlayButtonStatus.MenuScene !== "undefined" && data.other.HttpPlayButtonStatus.MenuScene){
+          obs_menu_event();
+        }
       } else {
-        obs_start_scene_change();
+        switch (data.other.HttpPlayButtonStatus.OptionScene) {
+          case 0:
+            obs_scene_change(obs_menu_scene_name);
+            break;
+          case 1:
+            obs_scene_change(obs_option1_scene_name);
+            break;
+          case 2:
+            obs_scene_change(obs_option2_scene_name);
+            break;
+          case 3:
+            obs_scene_change(obs_option3_scene_name);
+            break;
+        }
       }
     }
   }
@@ -230,6 +292,7 @@ function obs_end_scene_change() {
 }
 
 function obs_menu_event() {
+  if (!obs_scene_change_enable) return;
   if (!obs_bs_menu_flag) {
     clearTimeout(obs_timeout_id);
     obs_bs_menu_flag = true;
