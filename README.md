@@ -34,6 +34,7 @@
     **注意点として `表示されていないときにソースをシャットダウン` と `シーンがアクティブになったときにブラウザの表示を更新` の２つはチェックしないで下さい**
 
     ![preview](https://rynan4818.github.io/obs-control2.png)
+    
     ページ権限を**OBSへの高度なアクセス**にして下さい。
     ![image](https://user-images.githubusercontent.com/14249877/169675883-fc8496ff-4439-4807-9f34-4950b077c907.png)
 
