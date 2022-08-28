@@ -9,7 +9,9 @@
 
 シーン切替を使用しない場合も、BeatSaberプレイ時のOBSのシーンをゲームシーン名、メニューシーン名に設定しておくことでシーン切替忘れ防止になります。
 
-また、録画忘れ防止機能として、録画ボタンを押さないで譜面のプレイ開始をすると警告音が鳴る機能もあります。
+他にも録画忘れ防止機能として、録画ボタンを押さないで譜面のプレイ開始をすると警告音が鳴る機能もあります。
+
+また、[HttpPlayButtonStatus](https://github.com/rynan4818/HttpPlayButtonStatus)を使用すると、ゲームシーンに切り替わるタイミングを、PLAYボタンを押した瞬間に早めことができたり、自動シーン切り替えのON/OFFやオプション用シーン1~3にBeatSaber内から手動切替ができます。
 
 [サンプル動画](https://twitter.com/rynan4818/status/1383422547090284550)
 
@@ -91,7 +93,9 @@
          const obs_option2_scene_name = 'BS-Option2';   //HttpPlayButtonStatus の "Option Scene 2"ボタンシーン名
          const obs_option3_scene_name = 'BS-Option3';   //HttpPlayButtonStatus の "Option Scene 3"ボタンシーン名
 
- 5. あとは通常通りOBS Studioで記録・配信すればＯＫです。
+ 5. [HttpPlayButtonStatus](https://github.com/rynan4818/HttpPlayButtonStatus)を使用する場合は、別途インストールして下さい。
+
+ 6. あとは通常通りStreamlabs Desktopで記録・配信すればＯＫです。
 ## 曲専用シーン切り替えについて
 曲専用にゲームスタート・エンド及びプレイ中の曲時間に合わせてシーン切り替えが可能です。
 
