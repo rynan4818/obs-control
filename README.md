@@ -44,7 +44,7 @@
 
  3. 1.でインストールしたオーバーレイのフォルダに、本ツールのファイルをコピーしてください。
 
-    - `js` フォルダに、`obs-control.js` と `obs-websocket.js` の２つを追加
+    - `js` フォルダに、`obs-control.js`を追加
     
       本ツールの`js`フォルダのファイルは、Beat Saber Overlay 改良版の[Release v2022/04/25](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2022%2F04%2F25)以降の`js`フォルダのファイルを対象にしています。それ以前の場合は最新版の`js`フォルダのファイルに差し替えて下さい。
     
@@ -95,7 +95,7 @@
 
  5. [HttpPlayButtonStatus](https://github.com/rynan4818/HttpPlayButtonStatus)を使用する場合は、別途インストールして下さい。
 
- 6. あとは通常通りStreamlabs Desktopで記録・配信すればＯＫです。
+ 6. あとは通常通りOBS Studioで記録・配信すればＯＫです。
 ## 曲専用シーン切り替えについて
 曲専用にゲームスタート・エンド及びプレイ中の曲時間に合わせてシーン切り替えが可能です。
 
@@ -202,11 +202,3 @@ obs-browserの機能デバッグにはOBSでの動作が必須のため、通常
 ## ライセンス
 
 本ツールのライセンスは[MITライセンス](https://github.com/rynan4818/obs-control/blob/main/LICENSE)を適用します
-
-本ツールに添付している `obs-websocket.js` は以下の物を使用しています。
-
-[obs-websocket-js](https://github.com/haganbmj/obs-websocket-js)
-
-obs-websocket-jsのライセンスは以下になります。
-
-[obs-websocket-js MIT License](https://github.com/haganbmj/obs-websocket-js/blob/master/LICENSE.md)
