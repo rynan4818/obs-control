@@ -50,7 +50,7 @@
     
     - インストールフォルダの `index.html` を本ツールの物に差し替え(上書き)
 
-      本ツールの`index.html`は、Beat Saber Overlay 改良版の[Release v2021/05/09](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F05%2F09)～[Release v2022/04/25](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2022%2F04%2F25)を元にしています。
+      本ツールの`index.html`は、Beat Saber Overlay 改良版の[Release v2021/05/09](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2021%2F05%2F09)～[Release v2023/02/18](https://github.com/rynan4818/beat-saber-overlay/releases/tag/v2023%2F02%2F18)を元にしています。
 
       オーバーレイがそれ以外のバージョンになっている場合や改造されている場合、他の表示スキンに変更している場合などは`index.html` を上書きすると表示内容が変わってしまいます。
     
