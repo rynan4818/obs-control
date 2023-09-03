@@ -102,6 +102,10 @@
 **本家のBeat Saber HTTP Statusは、曲時間が同期しないのでズレる可能性が高いです。HttpSiraStatusは毎秒同期するため基本的にズレません。HttpSiraStatusの使用をオススメします。**
 曲時間の同期はBeat Saber Overlay 改良版のRelease v2021/10/10以降で有効です。
 
+ただし、中間に入るもの(HTTP Statusやオーバーレイなど)が多いのでどうしてもズレる場合があります。
+
+さらに高精度のタイミングでシーン切替をしたい場合は、[AutoItControl](https://github.com/rynan4818/AutoItControl)を使用してBeatSaberから直接OBSのショートカットキーを操作する方法も検討してください。
+
 通常は曲専用シーン切り替えは無効になっています。有効にするには、`index.html` をメモ帳（エディタ）で開いて
 
     <script src='./js/obs-control.js'></script>
