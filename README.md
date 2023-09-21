@@ -118,7 +118,7 @@
 
 次に`js`フォルダの`song-scene.js` ファイルに曲ごとのシーン切り替え情報を設定します。
 
-    const song_scene_json = `                                 //バックスラッシュからJSONデータ開始
+    const song_scene_json = `                                 //バッククオートからJSONデータ開始
     [                                                         //設定したい譜面の数だけ並べる
       {                                                       //１譜面目の情報
         "hash": "06121351C6BC732112B20D2C524FB84C036DDF5E",   //譜面のハッシュ値
@@ -174,7 +174,7 @@
         ]
       }   //最後は,不要
     ]
-    `;                                                        //バックスラッシュまででJSONデータ終了
+    `;                                                        //バッククオートまででJSONデータ終了
 
 1. `song-scene.js`の中身の``(バッククオート)内をJSONデータで作成します。
 2. 1曲ごとに、[オブジェクト](https://github.com/rynan4818/obs-control/blob/main/js/song-scene.js#L3-L17)の配列にして下さい。
