@@ -117,7 +117,7 @@
 
 次に`js`フォルダの`song-scene.js` ファイルに曲ごとのシーン切り替え情報を設定します。
 
-**`song-scene.js`は、こちらの説明コメント付きではなくzipファイルに付属しているコメントの無い方を使用して下さい。コメント付きだと動作しません**
+**`song-scene.js`は、こちらの説明コメント付きではなくzipファイルに付属している[コメントの無い方](https://github.com/rynan4818/obs-control/blob/main/js/song-scene.js)を使用して下さい。コメント付きだと動作しません**
 
     const song_scene_json = `                                 //バッククオートからJSONデータ開始
     [                                                         //設定したい譜面の数だけ並べる
