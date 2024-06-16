@@ -119,6 +119,7 @@
 
 **`song-scene.js`は、こちらの説明コメント付きではなくzipファイルに付属している[コメントの無い方](https://github.com/rynan4818/obs-control/blob/main/js/song-scene.js)を使用して下さい。コメント付きだと動作しません**
 
+    //JSON内にコメントを入れるとエラーで動作しないので、こちらの説明は使用しないで下さい。zip内のsong-scene.jsを使用して下さい。
     const song_scene_json = `                                 //バッククオートからJSONデータ開始
     [                                                         //設定したい譜面の数だけ並べる
       {                                                       //１譜面目の情報
