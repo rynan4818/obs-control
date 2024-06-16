@@ -109,13 +109,15 @@
 
     <script src='./js/obs-control.js'></script>
 
-[の行の**上に**](https://github.com/rynan4818/obs-control/blob/main/index.html#L112) ※`obs-control.js`より下だと動作しません。
+[の行の**上に**](https://github.com/rynan4818/obs-control/blob/main/index.html#L112) **※`obs-control.js`より下だと動作しません。**
 
     <script src='./js/song-scene.js'></script>
 
 を追加して保存して下さい。
 
 次に`js`フォルダの`song-scene.js` ファイルに曲ごとのシーン切り替え情報を設定します。
+
+**`song-scene.js`は、こちらの説明コメント付きではなくzipファイルに付属しているコメントの無い方を使用して下さい。コメント付きだと動作しません**
 
     const song_scene_json = `                                 //バッククオートからJSONデータ開始
     [                                                         //設定したい譜面の数だけ並べる
