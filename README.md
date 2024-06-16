@@ -109,7 +109,7 @@
 
     <script src='./js/obs-control.js'></script>
 
-[の行の**上に**](https://github.com/rynan4818/obs-control/blob/main/index.html#L114) ※`obs-control.js`より下だと動作しません。
+[の行の**上に**](https://github.com/rynan4818/obs-control/blob/main/index.html#L112) ※`obs-control.js`より下だと動作しません。
 
     <script src='./js/song-scene.js'></script>
 
