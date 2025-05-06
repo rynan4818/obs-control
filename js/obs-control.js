@@ -1,5 +1,6 @@
 const obs_game_scene_name  = 'BS-Game';        //ゲームシーン名
 const obs_menu_scene_name  = 'BS-Menu';        //メニューシーン名
+const obs_mic_mute_scene_footer = 'MUTE';
 const obs_game_event_delay = 0;                //ゲームシーン開始タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
 const obs_menu_event_delay = 0;                //ゲームシーン終了(メニューに戻る)タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
 const obs_menu_event_switch = false;           //[true/false]ゲームシーン終了タイミングをfinish/failした瞬間に変更する場合は true にします。約3~4秒程度早まりますのでobs_menu_event_delayと合わせて終了タイミングの微調整に使えます。
@@ -26,6 +27,7 @@ let obs_end_event = '';
 let obs_timeout_id;
 let obs_full_combo = true;
 let obs_scene_change_enable = true;
+let obs_mic_mute = false;
 let song_scene_list = false;
 let song_scene_next_time = false;
 let song_scene_next_name = "";
@@ -75,6 +77,9 @@ function obs_rec_check() {
 }
 
 function obs_scene_change(scene_name) {
+  if (obs_mic_mute) {
+    scene_name += obs_mic_mute_scene_footer
+  }
   if (!obs_browser_check) return;
   if (scene_name != obs_now_scene) {
     window.obsstudio.setCurrentScene(scene_name);
@@ -218,7 +223,7 @@ function obs_playStart_event(songHash, songName, delay = 0) {
     if (delay > 0){
       obs_timeout_id = setTimeout(obs_playStart_event2, delay * 1000);
     } else{
-      obs_playStart_event2()
+      obs_playStart_event2();
     }
   }
 }
@@ -230,6 +235,14 @@ ex_songStart.push((data) => {
 ex_other.push((data) => {
   if (typeof data.other !== "undefined") {
     if (typeof data.other.HttpPlayButtonStatus !== "undefined") {
+      if (typeof data.other.HttpPlayButtonStatus.MicMute !== "undefined") {
+          obs_mic_mute = data.other.HttpPlayButtonStatus.MicMute;
+        if (obs_bs_menu_flag) {
+          obs_menu_scene_change();
+        } else {
+          obs_game_scene_change();
+        }
+      }
       if (typeof data.other.HttpPlayButtonStatus.OptionScene === "undefined"){
         if (typeof data.other.HttpPlayButtonStatus.SceneChange !== "undefined") obs_scene_change_enable = data.other.HttpPlayButtonStatus.SceneChange;
         if (typeof data.other.HttpPlayButtonStatus.PlayStart !== "undefined" && data.other.HttpPlayButtonStatus.PlayStart) {
