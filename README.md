@@ -72,11 +72,13 @@
     
     シーン切り替え機能を使用せず、録画状態チェックのみ使用する場合は `obs_game_scene_name` と `obs_menu_scene_name` を普段BeatSaberで使用するシーン名にして、`obs_recording_check`を`true`にしてください。シーン切り替え忘れ防止、録画忘れ防止になります。
 
-         const obs_game_scene_name  = 'BS-Game';        //ゲームシーン名
-         const obs_menu_scene_name  = 'BS-Menu';        //メニューシーン名
-         const obs_game_event_delay = 0;                //ゲームシーン開始タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
-         const obs_menu_event_delay = 0;                //ゲームシーン終了(メニューに戻る)タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
-         const obs_menu_event_switch = false;           //[true/false]ゲームシーン終了タイミングをfinish/failした瞬間に変更する場合は true にします。約3~4秒程度早まりますのでobs_menu_event_delayと合わせて終了タイミングの微調整に使えます。
+         const obs_game_scene_name  = 'BS-Game';          //ゲームシーン名
+         const obs_menu_scene_name  = 'BS-Menu';          //メニューシーン名
+         const obs_song_script_game_scene_name = false;   //CameraSongScript使用時に曲専用スクリプトの時のゲームシーン名(例 'BS-SONG-SCRIPT')。falseで無効。
+         const obs_common_script_game_scene_name = false; //CameraSongScript の status が commonScript の時のゲームシーン名(例 'BS-COM-SCRIPT')。falseで無効。
+         const obs_game_event_delay = 0;                  //ゲームシーン開始タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
+         const obs_menu_event_delay = 0;                  //ゲームシーン終了(メニューに戻る)タイミングを遅らせる場合に遅らせるミリ秒を設定して下さい。タイミングを早めること（マイナス値）はできません。[0の場合は無効]
+         const obs_menu_event_switch = false;             //[true/false]ゲームシーン終了タイミングをfinish/failした瞬間に変更する場合は true にします。約3~4秒程度早まりますのでobs_menu_event_delayと合わせて終了タイミングの微調整に使えます。
          const obs_start_scene_duration     = 0;              //ゲームシーンに切り替える前に開始シーンを表示する時間(秒単位[小数3位までOK]) [0の場合は無効]
          const obs_start_scene_name         = 'BS-Start';     //開始シーン名  ※使用時はobs_start_scene_durationの設定要
          const obs_finish_scene_duration    = 0;              //Finish(クリア)時にメニューシーンに切替わる前に終了シーンを表示する時間(秒単位[小数3位までOK]) [0の場合は無効]
@@ -92,6 +94,8 @@
          const obs_option1_scene_name = 'BS-Option1';   //HttpPlayButtonStatus の "Option Scene 1"ボタンシーン名
          const obs_option2_scene_name = 'BS-Option2';   //HttpPlayButtonStatus の "Option Scene 2"ボタンシーン名
          const obs_option3_scene_name = 'BS-Option3';   //HttpPlayButtonStatus の "Option Scene 3"ボタンシーン名
+
+    `obs_song_script_game_scene_name` と `obs_common_script_game_scene_name` は、[CameraSongScript](https://github.com/rynan4818/CameraSongScript) の `CameraSongScript.HttpSiraStatus` を使用している場合に有効です。曲専用スクリプトと汎用スクリプトの時に、それぞれ専用のゲームシーンへ切り替えます。`false` のままなら無効です。`song-scene.js` で `gamescene` を設定している場合は、そちらが優先されます。
 
  5. [HttpPlayButtonStatus](https://github.com/rynan4818/HttpPlayButtonStatus)を使用する場合は、別途インストールして下さい。
 
